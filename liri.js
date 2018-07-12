@@ -6,7 +6,6 @@ var request = require("request");
 var command = process.argv[2];
 var title = process.argv.slice(3).join(" ");
 
-
 function doSomething() {
 
 	switch (command) {
@@ -62,23 +61,26 @@ var getSongInfo = function(){
 
 // * If no song is provided then your program will default to "The Sign" by Ace of Base.
 	var spotify = new Spotify({
-		id: keysFile.id,
-		secret: keysFile.secret,
+		id: keysFile.spotify.id,
+		secret: keysFile.spotify.secret,
 	  });
 	   
-	  spotify.search({ type: 'track', query: 'All the Small Things' }, function(err, data) {
+	  spotify.search({ type: 'track', query: title }, function(err, data) {
 		if (err) {
 		  return console.log('Error occurred: ' + err);
 		}
-	   
-	  console.log(data); 
+		var songInfo = data.tracks.items[0];
+		console.log(songInfo);
+		console.log("Artist(s): " + songInfo.artists);
+		console.log("Song: " + songInfo.tracks.items[0].name)
+		console.log("Spotify Preview URL: " + songInfo.tracks.items[0].preview_url)
+		console.log("Album Name: " + songInfo.tracks.items[0].album.name);
+	
 	  });
 }
 
 var getMovieInfo = function(){
 // 	* This will output the following information to your terminal/bash window:
-
-// 	```
 // 		* Title of the movie.
 // 		* Year the movie came out.
 // 		* IMDB Rating of the movie.
@@ -87,12 +89,8 @@ var getMovieInfo = function(){
 // 		* Language of the movie.
 // 		* Plot of the movie.
 // 		* Actors in the movie.
-// 	```
-
-// * If the user doesn't type a movie in, the program will output data for the movie 'Mr. Nobody.'
 	request("http://www.omdbapi.com/?t=" + title + "&y=&plot=short&apikey=trilogy", function(error, response, body) {
 
-  // If the request is successful (i.e. if the response status code is 200)
   if (!error && response.statusCode === 200) {
 		var movieInfo = JSON.parse(body);
 
@@ -104,10 +102,8 @@ var getMovieInfo = function(){
 		console.log(movieInfo.Plot);
 		console.log(movieInfo.Actors);
 	}
-		else if(!title){
-			title = Mr. Nobody;
-			getMovieInfo();
-		}
+	// * If the user doesn't type a movie in, the program will output data for the movie 'Mr. Nobody.'
+			// TODO: if nothing is given as an argument in the 3rd slot in the Array, set title to "Mr. Robot" and run the function as usual 
 });
 }
 
