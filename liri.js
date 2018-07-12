@@ -4,6 +4,7 @@ var Spotify = require("node-spotify-api");
 var keysFile = require("./keys.js");
 var request = require("request");
 var command = process.argv[2];
+var title = process.argv.slice(3).join(" ");
 
 
 function doSomething() {
@@ -17,23 +18,22 @@ function doSomething() {
 
 		// Gets song information.
 		case "spotify-this-song":
-        var songTitle = "All the small things";
-        getSongInfo(songTitle);
+    getSongInfo(title);
 		break;
 
 		// Gets movie information.
 		case "movie-this":
-		var movieTitle = command;
-        getMovieInfo(movieTitle);
-        break;
+		getMovieInfo(title);
+    break;
         
-        case "do-what-it-says": 
+    case "do-what-it-says": 
 		doWhatItSays();
 		break;
 	}
 }
 
 var getMyTweets = function(){
+	// * This will show your last 20 tweets and when they were created at in your terminal/bash window.
 	var client = new Twitter({
 		consumer_key: keysFile.consumer_key,
 		consumer_secret: keysFile.consumer_secret,
@@ -50,6 +50,17 @@ var getMyTweets = function(){
 }
 
 var getSongInfo = function(){
+// 	* This will show the following information about the song in your terminal/bash window
+     
+// 	* Artist(s)
+	
+// 	* The song's name
+	
+// 	* A preview link of the song from Spotify
+	
+// 	* The album that the song is from
+
+// * If no song is provided then your program will default to "The Sign" by Ace of Base.
 	var spotify = new Spotify({
 		id: keysFile.id,
 		secret: keysFile.secret,
@@ -65,17 +76,48 @@ var getSongInfo = function(){
 }
 
 var getMovieInfo = function(){
-	request("http://www.omdbapi.com/?t=remember+the+titans&y=&plot=short&apikey=trilogy", function(error, response, body) {
+// 	* This will output the following information to your terminal/bash window:
+
+// 	```
+// 		* Title of the movie.
+// 		* Year the movie came out.
+// 		* IMDB Rating of the movie.
+// 		* Rotten Tomatoes Rating of the movie.
+// 		* Country where the movie was produced.
+// 		* Language of the movie.
+// 		* Plot of the movie.
+// 		* Actors in the movie.
+// 	```
+
+// * If the user doesn't type a movie in, the program will output data for the movie 'Mr. Nobody.'
+	request("http://www.omdbapi.com/?t=" + title + "&y=&plot=short&apikey=trilogy", function(error, response, body) {
 
   // If the request is successful (i.e. if the response status code is 200)
   if (!error && response.statusCode === 200) {
+		var movieInfo = JSON.parse(body);
 
-    console.log("The movie's rating is: " + JSON.parse(body).Genre);
-  }
+		console.log(movieInfo.Title);
+		console.log(movieInfo.Ratings[0]);
+		console.log(movieInfo.Ratings[1]);
+		console.log(movieInfo.Country);
+		console.log(movieInfo.Language);
+		console.log(movieInfo.Plot);
+		console.log(movieInfo.Actors);
+	}
+		else if(!title){
+			title = Mr. Nobody;
+			getMovieInfo();
+		}
 });
 }
 
 var doWhatItSays = function() {
+	// * Using the `fs` Node package, LIRI will take the text inside of random.txt and then use it to call one of LIRI's commands.
+     
+	// * It should run `spotify-this-song` for "I Want it That Way," as follows the text in `random.txt`.
+	
+	// * Feel free to change the text in that document to test out the feature for other commands.
+
 	
 }
 doSomething();
