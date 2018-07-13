@@ -11,22 +11,19 @@ function doSomething() {
 
 	switch (command) {
 		
-		// Gets list of tweets.
 		case "my-tweets": 
 		getMyTweets();
 		break;
 
-		// Gets song information.
 		case "spotify-this-song":
-    getSongInfo(title);
+    	getSongInfo(title);
 		break;
 
-		// Gets movie information.
 		case "movie-this":
 		getMovieInfo(title);
-    break;
+    	break;
         
-    case "do-what-it-says": 
+    	case "do-what-it-says": 
 		doWhatItSays();
 		break;
 	}
