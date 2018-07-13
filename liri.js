@@ -3,6 +3,7 @@ var Twitter = require("twitter");
 var Spotify = require("node-spotify-api");
 var keysFile = require("./keys.js");
 var request = require("request");
+var fs = require("fs");
 var command = process.argv[2];
 var title = process.argv.slice(3).join(" ");
 
@@ -92,12 +93,14 @@ var getMovieInfo = function(){
 }
 
 var doWhatItSays = function() {
-	// * Using the `fs` Node package, LIRI will take the text inside of random.txt and then use it to call one of LIRI's commands.
-     
-	// * It should run `spotify-this-song` for "I Want it That Way," as follows the text in `random.txt`.
-	
-	// * Feel free to change the text in that document to test out the feature for other commands.
-
+	fs.readFile("random.txt", "utf8", function(err, data){
+		if(err){
+			console.log("Error!")
+		}
+		var txtTitle = data.split(',');
+		title = txtTitle[1]
+		getSongInfo(title);
+	})
 	
 }
 doSomething();
