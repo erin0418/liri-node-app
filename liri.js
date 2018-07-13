@@ -48,9 +48,6 @@ var getMyTweets = function(){
 				console.log("Tweet: " + tweetInfo.text + " @ " + tweetInfo.created_at);
 		}
 	}
-// 	for (var i = 0; i < tweets.statuses.length; i++) {
-
-// };
 });
 }
 
