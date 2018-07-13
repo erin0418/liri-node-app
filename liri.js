@@ -38,13 +38,18 @@ var getMyTweets = function(){
 		consumer_secret: keysFile.twitter.consumer_secret,
 		access_token_key: keysFile.twitter.access_token_key,
 		access_token_secret: keysFile.twitter.access_token_secret,
-	  });
-	var params = {screen_name: 'Erin09306415'};
+		});
+	var params = {screen_name: 'Erin09306415', count: 20};
 	client.get('statuses/user_timeline', params, function(error, tweets, response) {
   	if (!error) {
-	console.log(tweets);
-	console.log(response);
-  }
+			for(var i = 0; i<tweets.length; i++){
+				var tweetInfo = tweets[i];
+				console.log("Tweet: " + tweetInfo.text + " @ " + tweetInfo.created_at);
+		}
+	}
+// 	for (var i = 0; i < tweets.statuses.length; i++) {
+
+// };
 });
 }
 
