@@ -34,10 +34,10 @@ function doSomething() {
 var getMyTweets = function(){
 	// * This will show your last 20 tweets and when they were created at in your terminal/bash window.
 	var client = new Twitter({
-		consumer_key: keysFile.consumer_key,
-		consumer_secret: keysFile.consumer_secret,
-		access_token_key: keysFile.access_token_key,
-		access_token_secret: keysFile.access_token_secret,
+		consumer_key: keysFile.twitter.consumer_key,
+		consumer_secret: keysFile.twitter.consumer_secret,
+		access_token_key: keysFile.twitter.access_token_key,
+		access_token_secret: keysFile.twitter.access_token_secret,
 	  });
 	var params = {screen_name: 'Erin09306415'};
 	client.get('statuses/user_timeline', params, function(error, tweets, response) {
@@ -49,46 +49,25 @@ var getMyTweets = function(){
 }
 
 var getSongInfo = function(){
-// 	* This will show the following information about the song in your terminal/bash window
-     
-// 	* Artist(s)
-	
-// 	* The song's name
-	
-// 	* A preview link of the song from Spotify
-	
-// 	* The album that the song is from
-
-// * If no song is provided then your program will default to "The Sign" by Ace of Base.
 	var spotify = new Spotify({
 		id: keysFile.spotify.id,
 		secret: keysFile.spotify.secret,
 	  });
-	   
-	  spotify.search({ type: 'track', query: title }, function(err, data) {
+	  spotify.search({ type: 'track', query: title, limit: 1}, function(err, data) {
 		if (err) {
 		  return console.log('Error occurred: ' + err);
 		}
-		var songInfo = data.tracks.items[0];
-		console.log(songInfo);
-		console.log("Artist(s): " + songInfo.artists);
-		console.log("Song: " + songInfo.tracks.items[0].name)
-		console.log("Spotify Preview URL: " + songInfo.tracks.items[0].preview_url)
-		console.log("Album Name: " + songInfo.tracks.items[0].album.name);
-	
-	  });
+			var songInfo = data.tracks.items[0];
+			console.log("Artist: " + songInfo.artists[0].name);
+			console.log("Song: " + songInfo.name);
+			console.log("Preview URL: " + songInfo.preview_url);
+			console.log("Album: " + songInfo.album.name);
+})
+// * If no song is provided then your program will default to "The Sign" by Ace of Base.
+			// TODO: if nothing is given as an argument in the 3rd slot, set title to "The Sign" and run the function as usual 
 }
 
 var getMovieInfo = function(){
-// 	* This will output the following information to your terminal/bash window:
-// 		* Title of the movie.
-// 		* Year the movie came out.
-// 		* IMDB Rating of the movie.
-// 		* Rotten Tomatoes Rating of the movie.
-// 		* Country where the movie was produced.
-// 		* Language of the movie.
-// 		* Plot of the movie.
-// 		* Actors in the movie.
 	request("http://www.omdbapi.com/?t=" + title + "&y=&plot=short&apikey=trilogy", function(error, response, body) {
 
   if (!error && response.statusCode === 200) {
@@ -103,7 +82,7 @@ var getMovieInfo = function(){
 		console.log(movieInfo.Actors);
 	}
 	// * If the user doesn't type a movie in, the program will output data for the movie 'Mr. Nobody.'
-			// TODO: if nothing is given as an argument in the 3rd slot in the Array, set title to "Mr. Robot" and run the function as usual 
+			// TODO: if nothing is given as an argument in the 3rd slot, set title to "Mr. Robot" and run the function as usual 
 });
 }
 
