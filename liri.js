@@ -101,6 +101,5 @@ var doWhatItSays = function() {
 		title = txtTitle[1]
 		getSongInfo(title);
 	})
-	
 }
 doSomething();
